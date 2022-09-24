@@ -1,40 +1,22 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 
 export default function Stories(){
-	const stories = [
-		{
-			id: 1,
-			nome: 'Perna',
-			src: require('../assets/imagens/teste1.png'),
-		},
-		{
-			id: 2,
-			nome: 'Patolino',
-			src: require('../assets/imagens/patolino1.jpg'),
-		},
-		{
-			id: 3,
-			nome: 'Perna',
-			src: require('../assets/imagens/teste1.png'),
-		},
-		{
-			id: 4,
-			nome: 'Patolino',
-			src: require('../assets/imagens/patolino1.jpg'),
-		},
-		{
-			id: 5,
-			nome: 'Perna',
-			src: require('../assets/imagens/teste1.png'),
-		},
-		
-	];
+	const [stories, setStories] = useState();
+	
+	useEffect(function(){
+		async function getData(){
+			const response = await fetch('https://mobile.ect.ufrn.br:3000/stories');
+			const storiesServidor = await response.json();
+			setStories(storiesServidor); //obrigatoriamente deve se usar o setStories para modificar o storie
+		}
+		getData();
+	},[])
 
 function renderItem({item}){
 	return <View style = {styles.story}> 
-				<Image style= {styles.imgstory} source = {item.src}/>
-				<Text> {item.nome} </Text>
+				<Image style= {styles.imgstory} source = {{uri: item.imgPerfilUri}}/>
+				<Text> {item.nomeUsuario} </Text>
 			</View>
 }
 	

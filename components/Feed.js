@@ -1,42 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, FlatList } from 'react-native';
 import {FontAwesome5} from '@expo/vector-icons';
 
 export default function Feed(){
-		const feed = [
-			{
-				id: 1,
-				nome: 'Patolino',
-				imgPerfil: require('../assets/imagens/patolino1.jpg'),
-				imgPost: require('../assets/imagens/patolino.jpg'),
-				aspectRatio: 1.777
-			},
-			{
-				id: 2,
-				nome: 'Perna',
-				imgPerfil: require('../assets/imagens/teste1.png'),
-				imgPost: require('../assets/imagens/nasa1.jpg'),
-				aspectRatio: 1.904
-			},
-			{
-				id: 3,
-				nome: 'Patolino',
-				imgPerfil: require('../assets/imagens/patolino1.jpg'),
-				imgPost: require('../assets/imagens/nasa2.jpg'),
-				aspectRatio: 1.501
-			},
-		
-		];
+	const [feed, setFeed] = useState();
+	
+	useEffect(function(){
+		async function getData() {
+			const response = await fetch('https://mobile.ect.ufrn.br:3000/feed');
+			const feedServidor = await response.json();
+			setFeed(feedServidor);
+		}
+		getData();
+	},[])
 	function renderItem({item}){
 		return <View style = {styles.post}>
 				<View style = {styles.postheader}>
 					<View style = {styles.postheaderEsquerda}>
-						<Image style = {styles.postheaderImg} source = {item.imgPerfil}/>
-						<Text> {item.nome} </Text>
+						<Image style = {styles.postheaderImg} source = {{uri: item.imgPerfilUri}}/>
+						<Text> {item.nomeUsuario} </Text>
 					</View>
 					<FontAwesome5 name = "ellipsis-h" size = {16} color = "black"></FontAwesome5>
 				</View>
-				<Image style= {styles.postimg} aspectRatio={item.aspectRatio} source = {item.imgPost}/>
+				<Image style= {styles.postimg} aspectRatio={item.aspectRatio} source = {{uri: item.imgPostUri}}/>
 				<View style = {styles.footer}>
 					<FontAwesome5 style={styles.footericon} name = "heart" size = {32} color = "black"></FontAwesome5>
 					<FontAwesome5 style={styles.footericon} name = "comment" size = {32} color = "black"></FontAwesome5>
