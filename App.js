@@ -1,30 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import Constants from 'expo-constants';
-import {FontAwesome5} from '@expo/vector-icons';
+import React from 'react'; 
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import HomeScreen from './screens/HomeScreen';
+import ChatListScreen from './screens/ChatListScreen';
+import ChatScreen from './screens/ChatScreen';
 
-import Header from './components/Header';
-import Stories from './components/Stories';
-import Feed from './components/Feed';
+const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-<View style={styles.container}>
-		<StatusBar style="light" />
-        <Header/>
-		<Stories/>
-		<Feed/>
-
-</View>
+export default function App(){
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name= "HomeScreen" component = {HomeScreen} options = {{headerShown: false}}/>
+        <Stack.Screen name= "ChatListScreen" component = {ChatListScreen} options = {{title: 'Chat List'}}/>
+        <Stack.Screen name= "ChatScreen" component = {ChatScreen} options = {{title: 'Chat'}}/>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: Constants.statusBarHeight,
-  },
-  
-  
-});
+}
