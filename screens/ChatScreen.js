@@ -12,6 +12,9 @@ export default function ChatScreen({route}){
         async function getData(){
             const response = await fetch('https://mobile.ect.ufrn.br:3000/chatlist/' + id);
             const chat = await response.json();
+            chat.mensagens.forEach((msg,idx) => { 
+                Object.assign(msg, {id: idx})
+            })
             setChat(chat);
         }
         getData()
